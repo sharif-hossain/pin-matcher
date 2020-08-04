@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input id="generate-random" class="form-control" type="text">
+                    <button id="generate-pin" class="generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input class="form-control" type="text" id="display">
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                                <div class="button" data-num="7">7</div>
+                                <div class="button" data-num='8'>8</div>
+                                <div class="button" data-num='9'>9</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button" data-num='4'>4</div>
+                                <div class="button" data-num='5'>5</div>
+                                <div class="button" data-num='6'>6</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button" data-num='1'>1</div>
+                                <div class="button" data-num='2'>2</div>
+                                <div class="button" data-num='3'>3</div>
+                            </div>
+
+                            <div class="calc-button-row">
+                                <div class="button btn-back">
+                                    <</div>
+                                        <div class="button" data-num='0'>0</div>
+                                        <div class="button btn-clear">C</div>
+                                </div>
+                                <div>
+                                    <button type="submit" class="submit-btn" id="btn-submit">Submit</button>
+                                    <p class="action-left"><span id="try-left">3</span> try left</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="notify-section" id="display-msg">
+                    <p class="notify" id="not-match">❌ Pin Didn't Match, Please try again</p>
+                    <p class="notify" id="match">✅ Pin Matched... Secret door is opening for you</p>
+                </div>
+            </div>
+            <script>
+                // Random number generator
+
+                const pinBtn = document.getElementById('generate-pin');
+                pinBtn.addEventListener('click', function() {
+                    function getRndInteger(min, max) {
+                        return Math.floor(Math.random() * (max - min + 1)) + min;
+                    }
+                    let randInt = getRndInteger(1000, 10000);
+
+                    let displayPin = document.getElementById('generate-random');
+                    displayPin = randInt;
+                    document.getElementById('generate-random').value = displayPin;
+                })
+
+                // Capture buttons
+
+                const numBtn = document.querySelectorAll('.button');
+                const displayNum = document.getElementById('display');
+
+                const clearBtn = document.querySelector('.btn-clear');
+                const backBtn = document.querySelector('.btn-back');
+
+
+                // Display calculator
+
+                for (let i = 0; i < numBtn.length; i++) {
+                    numBtn[i].addEventListener('click', function() {
+                        let number = numBtn[i].getAttribute('data-num');
+
+                        displayNum.value += number;
+                        // console.log(number);
+                    })
+                }
+                clearBtn.addEventListener('click', function() {
+
+                    displayNum.value = '';
+                })
+
+                // Delete last number of a digit
+
+                backBtn.addEventListener("click", function() {
+
+                    displayNum.value = displayNum.value.slice(0, -5);
+                })
+
+                //Display message section
+
+                let submitBtn = document.getElementById('btn-submit');
+                submitBtn.addEventListener('click', function() {
+                    if (document.getElementById('generate-random').value == document.getElementById('display').value) {
+                        document.getElementById("match").style.display = "block";
+                        document.getElementById('not-match').style.display = 'none';
+                    }
+                    if (document.getElementById('generate-random').value != document.getElementById('display').value) {
+                        document.getElementById("not-match").style.display = "block";
+                        document.getElementById("match").style.display = "none";
+
+                        const tries = document.getElementById("try-left").innerText;
+                        const remains = +tries;
+                        const tryLeft = remains - 1;
+                        document.getElementById("try-left").innerText = tryLeft;
+                        if (tryLeft <= 0) {
+                            document.getElementById("btn-submit").disabled = true;
+
+                        }
+                    }
+                })
+            </script>
+</body>
+
+</html>
