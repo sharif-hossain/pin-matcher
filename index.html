@@ -86,10 +86,9 @@
 
                 for (let i = 0; i < numBtn.length; i++) {
                     numBtn[i].addEventListener('click', function() {
-                        let number = numBtn[i].getAttribute('data-num');
 
+                        let number = numBtn[i].getAttribute('data-num');
                         displayNum.value += number;
-                        // console.log(number);
                     })
                 }
                 clearBtn.addEventListener('click', function() {
@@ -108,21 +107,27 @@
 
                 let submitBtn = document.getElementById('btn-submit');
                 submitBtn.addEventListener('click', function() {
-                    if (document.getElementById('generate-random').value == document.getElementById('display').value) {
-                        document.getElementById("match").style.display = "block";
-                        document.getElementById('not-match').style.display = 'none';
-                    }
-                    if (document.getElementById('generate-random').value != document.getElementById('display').value) {
-                        document.getElementById("not-match").style.display = "block";
-                        document.getElementById("match").style.display = "none";
+                    if (displayNum.value == '') {
+                        alert("Input field is empty");
+                    } else {
+                        if (document.getElementById('generate-random').value == document.getElementById('display').value) {
+                            document.getElementById("match").style.display = "block";
+                            document.getElementById('not-match').style.display = 'none';
+                        }
+                        if (document.getElementById('generate-random').value != document.getElementById('display').value) {
+                            document.getElementById("not-match").style.display = "block";
+                            document.getElementById("match").style.display = "none";
 
-                        const tries = document.getElementById("try-left").innerText;
-                        const remains = +tries;
-                        const tryLeft = remains - 1;
-                        document.getElementById("try-left").innerText = tryLeft;
-                        if (tryLeft <= 0) {
-                            document.getElementById("btn-submit").disabled = true;
+                            const tries = document.getElementById("try-left").innerText;
+                            const remains = +tries;
+                            const tryLeft = remains - 1;
+                            document.getElementById("try-left").innerText = tryLeft;
+                            if (tryLeft <= 0) {
+                                document.getElementById("btn-submit").disabled = true;
+                                document.getElementById("btn-submit").style.cursor = 'not-allowed';
+                                document.getElementById("btn-submit").style.backgroundColor = 'red';
 
+                            }
                         }
                     }
                 })
